@@ -84,7 +84,7 @@ This deployment runs Minecraft Bedrock Server **1.26.0.2** in a Kubernetes pod w
 ```bash
 cd ~/bedrock-server-for-dads
 
-./scripts/deploy.sh
+./scripts/start-and-deploy.sh
 ```
 
 ### Check Status
@@ -117,11 +117,11 @@ Builds the Docker image and imports it into K3s.
 - After modifying the Dockerfile
 - When creating a new version
 
-### `deploy.sh`
+### `start-and-deploy.sh`
 Deploys/updates the Bedrock server to K3s.
 
 ```bash
-./scripts/deploy.sh
+./scripts/start-and-deploy.sh
 ```
 
 **What it does:**
@@ -259,7 +259,7 @@ resources:
 
 **After editing:**
 ```bash
-./scripts/deploy.sh
+./scripts/start-and-deploy.sh
 ```
 
 ### Persistent Storage
@@ -456,7 +456,7 @@ vi ~/bedrock-server-for-dads/k8s/03-deployment.yaml
 ```bash
 cd ~/bedrock-server-for-dads
 ./scripts/build.sh
-./scripts/deploy.sh
+./scripts/start-and-deploy.sh
 ```
 
 ### Undeploying the Server
