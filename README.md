@@ -1,6 +1,6 @@
 # Bedrock Minecraft Server - Kubernetes Deployment
 
-Containerized Minecraft Bedrock Server running on K3s with optimized settings for the Henrybook server.
+Containerized Minecraft Bedrock Server running on K3s with optimized settings for the server in a wardrobe context.
 
 ## 📋 Table of Contents
 
@@ -17,7 +17,7 @@ Containerized Minecraft Bedrock Server running on K3s with optimized settings fo
 
 ## Overview
 
-This deployment runs Minecraft Bedrock Server **1.21.132.3** in a Kubernetes pod with:
+This deployment runs Minecraft Bedrock Server **1.26.0.2** in a Kubernetes pod with:
 - ✅ Persistent world data storage
 - ✅ Optimized configuration for low-resource hardware
 - ✅ Easy management via kubectl and custom scripts
@@ -25,7 +25,7 @@ This deployment runs Minecraft Bedrock Server **1.21.132.3** in a Kubernetes pod
 - ✅ Health checks and readiness probes
 
 ### Server Specifications
-- **Version**: 1.21.132.3
+- **Version**: 1.26.0.2
 - **Max Players**: 5
 - **View Distance**: 10 chunks
 - **Tick Distance**: 3 chunks
@@ -37,9 +37,9 @@ This deployment runs Minecraft Bedrock Server **1.21.132.3** in a Kubernetes pod
 ## Architecture
 
 ```
-┌─────────────────────────────────────────┐
-│   Henrybook Server (192.168.0.170)     │
-│                                         │
+┌────────────────────────────────────────┐
+│   The Dads Minecraft Srv (your LAN ip) │
+│                                        │
 │  ┌────────────────────────────────┐    │
 │  │         K3s Cluster            │    │
 │  │                                │    │
@@ -57,7 +57,7 @@ This deployment runs Minecraft Bedrock Server **1.21.132.3** in a Kubernetes pod
 │  │  │  │  └──────────────┘  │  │  │    │
 │  │  │  │         ↓          │  │  │    │
 │  │  │  │  ┌──────────────┐  │  │  │    │
-│  │  │  │  │ PVC (10GB)   │  │  │  │    │
+│  │  │  │  │ PVC (1 GB)   │  │  │  │    │
 │  │  │  │  │ World Data   │  │  │  │    │
 │  │  │  │  └──────────────┘  │  │  │    │
 │  │  │  └────────────────────┘  │  │    │
@@ -68,7 +68,7 @@ This deployment runs Minecraft Bedrock Server **1.21.132.3** in a Kubernetes pod
 │  │  │  └────────────────────┘  │  │    │
 │  │  └──────────────────────────┘  │    │
 │  └────────────────────────────────┘    │
-└─────────────────────────────────────────┘
+└────────────────────────────────────────┘
 ```
 
 ---
@@ -76,7 +76,7 @@ This deployment runs Minecraft Bedrock Server **1.21.132.3** in a Kubernetes pod
 ## Quick Start
 
 ### Prerequisites
-- K3s cluster running on Henrybook server
+- K3s cluster running on your Linux server
 - kubectl configured with access to the cluster
 - KUBECONFIG set to `~/.kube/config`
 
@@ -263,7 +263,7 @@ resources:
 
 ### Persistent Storage
 
-Default: 10GB for world data.
+Default: 1 GB for world data.
 
 To change:
 ```bash
@@ -271,7 +271,7 @@ To change:
 vi ~/bedrock-container/k8s/01-pvc.yaml
 
 # Change this line:
-storage: 10Gi  # Increase as needed
+storage: 1Gi  # Increase as needed
 ```
 
 **Note:** K3s uses `local-path` storage, which uses host filesystem space.
@@ -627,7 +627,7 @@ rm -rf ~/"Bedrock Server 1.21.132"*
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.21.132.3 | 2026-01-10 | Initial containerized deployment |
-
+| 1.26.0.2 | 2026-02-12 | Updated for new Minecraft server version 1.26.0.2 |
 ---
 
 ## License
