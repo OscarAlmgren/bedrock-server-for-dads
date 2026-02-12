@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bedrock-server
+  namespace: minecraft
+  labels:
+    app: bedrock-server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: bedrock-server
+  template:
+    metadata:
+      labels:
+        app: bedrock-server
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: bedrock
+        image: oscaralmgren/bedrock-server:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 19132
+          hostPort: 19132
+          protocol: UDP
+          name: bedrock-ipv4
+        - containerPort: 19133
+          hostPort: 19133
+          protocol: UDP
+          name: bedrock-ipv6
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "2000m"
+        volumeMounts:
+        - name: worlds
+          mountPath: /bedrock/worlds
+        - name: config
+          mountPath: /bedrock/server.properties
+          subPath: server.properties
+        livenessProbe:
+          exec:
+            command:
+            - pgrep
+            - -x
+            - bedrock_server
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - pgrep
+            - -x
+            - bedrock_server
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+      volumes:
+      - name: worlds
+        persistentVolumeClaim:
+          claimName: bedrock-worlds
+      - name: config
+        configMap:
+          name: bedrock-config
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 1000
