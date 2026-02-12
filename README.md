@@ -209,7 +209,7 @@ Updates server.properties without rebuilding the image.
 
 ```bash
 # 1. Edit the ConfigMap
-vi ~/bedrock-container/k8s/02-configmap.yaml
+vi ~/bedrock-server-for-dads/k8s/02-configmap.yaml
 
 # 2. Apply changes
 ./scripts/update-config.sh
@@ -335,14 +335,14 @@ kubectl exec -n minecraft $POD -- ls -la /bedrock/worlds/
 
 1. **Reduce view distance:**
 ```bash
-vi ~/bedrock-container/k8s/02-configmap.yaml
+vi ~/bedrock-server-for-dads/k8s/02-configmap.yaml
 # Change: view-distance=10 to view-distance=8
 ./scripts/update-config.sh
 ```
 
 2. **Reduce player limit:**
 ```bash
-vi ~/bedrock-container/k8s/02-configmap.yaml
+vi ~/bedrock-server-for-dads/k8s/02-configmap.yaml
 # Change: max-players=5 to max-players=3
 ./scripts/update-config.sh
 ```
@@ -381,10 +381,10 @@ Backups are stored in: `~/bedrock-backups/`
 crontab -e
 
 # Add this line for daily backups at 3 AM
-0 3 * * * /home/your_username/bedrock-container/scripts/backup.sh
+0 3 * * * /home/your_username/bedrock-server-for-dads/scripts/backup.sh
 
 # Or every 6 hours:
-0 */6 * * * /home/your_username/bedrock-container/scripts/backup.sh
+0 */6 * * * /home/your_username/bedrock-server-for-dads/scripts/backup.sh
 ```
 
 ### Restore from Backup
@@ -442,19 +442,19 @@ unzip bedrock-server-X.X.X.X.zip -d "Bedrock Server X.X.X.X"
 
 2. **Update Dockerfile image tag:**
 ```bash
-vi ~/bedrock-container/Dockerfile
+vi ~/bedrock-server-for-dads/Dockerfile
 # Update version in comments if needed
 ```
 
 3. **Update deployment manifest:**
 ```bash
-vi ~/bedrock-container/k8s/03-deployment.yaml
+vi ~/bedrock-server-for-dads/k8s/03-deployment.yaml
 # Change image tag to new version
 ```
 
 4. **Rebuild and deploy:**
 ```bash
-cd ~/bedrock-container
+cd ~/bedrock-server-for-dads
 ./scripts/build.sh
 ./scripts/deploy.sh
 ```
