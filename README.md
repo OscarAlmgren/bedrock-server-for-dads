@@ -1,6 +1,6 @@
 # Bedrock Minecraft Server - Kubernetes Deployment
 
-Containerized Minecraft Bedrock Server running on K3s with optimized settings for the server in a wardrobe context.
+Containerized Minecraft Bedrock Server running on K3s with optimized settings for "the Dad's server for his kids" context.
 
 ## 📋 Table of Contents
 
@@ -38,7 +38,7 @@ This deployment runs Minecraft Bedrock Server **1.26.0.2** in a Kubernetes pod w
 
 ```
 ┌────────────────────────────────────────┐
-│   The Dads Minecraft Srv (your LAN ip) │
+│   Your Linux server here (your LAN ip) │
 │                                        │
 │  ┌────────────────────────────────┐    │
 │  │         K3s Cluster            │    │
@@ -82,7 +82,8 @@ This deployment runs Minecraft Bedrock Server **1.26.0.2** in a Kubernetes pod w
 
 ### Deploy the Server
 ```bash
-cd ~/bedrock-container
+cd ~/bedrock-server-for-dads
+
 ./scripts/deploy.sh
 ```
 
@@ -102,7 +103,7 @@ cd ~/bedrock-container
 
 ## Management Scripts
 
-All scripts are located in `~/bedrock-container/scripts/`.
+All scripts are located in `~/bedrock-server-for-dads/scripts/`.
 
 ### `build.sh`
 Builds the Docker image and imports it into K3s.
@@ -224,7 +225,7 @@ vi ~/bedrock-container/k8s/02-configmap.yaml
 
 ### Server Properties
 
-Edit `~/bedrock-container/k8s/02-configmap.yaml` to change server settings.
+Edit `~/bedrock-server-for-dads/k8s/02-configmap.yaml` to change server settings.
 
 **Key settings:**
 ```yaml
@@ -244,7 +245,7 @@ server-authoritative-movement-strict=true  # Anti-cheat
 
 ### Resource Limits
 
-Edit `~/bedrock-container/k8s/03-deployment.yaml`:
+Edit `~/bedrock-server-for-dads/k8s/03-deployment.yaml`:
 
 ```yaml
 resources:
@@ -268,7 +269,7 @@ Default: 1 GB for world data.
 To change:
 ```bash
 # Edit PVC size
-vi ~/bedrock-container/k8s/01-pvc.yaml
+vi ~/bedrock-server-for-dads/k8s/01-pvc.yaml
 
 # Change this line:
 storage: 1Gi  # Increase as needed
@@ -309,7 +310,7 @@ sudo netstat -ulnp | grep 19132
 ```
 
 3. **Verify server IP:**
-- Server IP: **192.168.0.170**
+- Server IP: **192.168.0.170** (or whatever your LAN IP is)
 - Port: **19132** (default)
 
 4. **Check firewall:**
@@ -380,10 +381,10 @@ Backups are stored in: `~/bedrock-backups/`
 crontab -e
 
 # Add this line for daily backups at 3 AM
-0 3 * * * /home/oscaralmgren/bedrock-container/scripts/backup.sh
+0 3 * * * /home/your_username/bedrock-container/scripts/backup.sh
 
 # Or every 6 hours:
-0 */6 * * * /home/oscaralmgren/bedrock-container/scripts/backup.sh
+0 */6 * * * /home/your_username/bedrock-container/scripts/backup.sh
 ```
 
 ### Restore from Backup
@@ -434,6 +435,7 @@ kubectl scale deployment bedrock-server -n minecraft --replicas=1
 1. **Download new version:**
 ```bash
 cd ~
+# Check the Minecraft Bedrock server homepage for correct download link if this fails.
 wget https://minecraft.azureedge.net/bin-linux/bedrock-server-X.X.X.X.zip
 unzip bedrock-server-X.X.X.X.zip -d "Bedrock Server X.X.X.X"
 ```
@@ -543,7 +545,7 @@ limits:
 ## Directory Structure
 
 ```
-~/bedrock-container/
+~/bedrock-server-for-dads/
 ├── Dockerfile                 # Container image definition
 ├── .dockerignore              # Files to exclude from image
 ├── README.md                  # This file
@@ -555,7 +557,7 @@ limits:
 │   └── 04-service.yaml        # Network service
 ├── scripts/                   # Management scripts
 │   ├── build.sh               # Build & import image
-│   ├── deploy.sh              # Deploy to K3s
+│   ├── start-and-deploy.sh    # Deploy to K3s
 │   ├── stop.sh                # Stop server
 │   ├── restart.sh             # Restart server
 │   ├── logs.sh                # View logs
