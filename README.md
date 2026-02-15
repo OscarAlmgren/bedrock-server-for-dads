@@ -106,16 +106,18 @@ cd ~/bedrock-server-for-dads
 All scripts are located in `~/bedrock-server-for-dads/scripts/`.
 
 ### `build.sh`
-Builds the Docker image and imports it into K3s.
-
-```bash
-./scripts/build.sh
-```
-
 **When to use:**
 - After updating the Bedrock server binary
 - After modifying the Dockerfile
 - When creating a new version
+
+** NOTE: You don't need to build this container; I'm doing it with this repo and Docker Hub. Only for your own understanding of how everything works.
+
+Builds the Docker image and imports it into K3S.
+
+```bash
+./scripts/build.sh
+```
 
 ### `start-and-deploy.sh`
 Deploys/updates the Bedrock server to K3s.
