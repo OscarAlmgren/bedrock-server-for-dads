@@ -5,7 +5,7 @@
 ### Option 1: Easy Way (Interactive)
 
 ```bash
-cd ~/bedrock-container
+cd ~/bedrock-server-for-dads
 ./scripts/edit-config.sh
 ```
 
@@ -15,7 +15,7 @@ Opens editor → Make changes → Auto-applies
 
 ```bash
 # 1. Edit
-nano ~/bedrock-container/k8s/02-configmap.yaml
+nano ~/bedrock-server-for-dads/k8s/02-configmap.yaml
 
 # 2. Find this section:
 #    data:
@@ -33,7 +33,7 @@ nano ~/bedrock-container/k8s/02-configmap.yaml
 ## 🛠️ Common Commands
 
 ```bash
-cd ~/bedrock-container
+cd ~/bedrock-server-for-dads
 
 ./scripts/start-and-deploy.sh # Deploy+Start in K3s or K8s
 ./scripts/status.sh           # Check server status
@@ -78,8 +78,8 @@ max-players=3
 
 ## 📚 Full Documentation
 
-- **Configuration Guide:** `~/bedrock-container/docs/CONFIGURATION.md`
-- **Complete Manual:** `~/bedrock-container/README.md`
+- **Configuration Guide:** `~/bedrock-server-for-dads/docs/CONFIGURATION.md`
+- **Complete Manual:** `~/bedrock-server-for-dads/README.md`
 
 ---
 
