@@ -3,13 +3,16 @@
 ## ⚡ Configuration Changes
 
 ### Option 1: Easy Way (Interactive)
+
 ```bash
 cd ~/bedrock-container
 ./scripts/edit-config.sh
 ```
+
 Opens editor → Make changes → Auto-applies
 
 ### Option 2: Manual Way
+
 ```bash
 # 1. Edit
 nano ~/bedrock-container/k8s/02-configmap.yaml
@@ -48,19 +51,24 @@ cd ~/bedrock-container
 ## 🎯 Quick Config Examples
 
 ### Increase Players (5 → 10)
+
 Edit `k8s/02-configmap.yaml`:
+
 ```yaml
 max-players=10
 ```
+
 Then: `./scripts/update-config.sh`
 
 ### Change to Survival Mode
+
 ```yaml
 gamemode=survival
 difficulty=normal
 ```
 
 ### Better Performance
+
 ```yaml
 view-distance=8
 max-players=3
@@ -78,16 +86,19 @@ max-players=3
 ## 🆘 Help
 
 **Server won't start?**
+
 ```bash
 ./scripts/logs.sh -n 100
 ```
 
 **Changes not applying?**
+
 ```bash
 ./scripts/restart.sh
 ```
 
 **Need to restore?**
+
 ```bash
 ls -lht ~/bedrock-backups/
 ./scripts/restore.sh ~/bedrock-backups/[filename]

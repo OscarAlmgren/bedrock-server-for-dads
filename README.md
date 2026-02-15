@@ -18,6 +18,7 @@ Containerized Minecraft Bedrock Server running on K3s with optimized settings fo
 ## Overview
 
 This deployment runs Minecraft Bedrock Server **1.26.0.2** in a Kubernetes pod with:
+
 - ✅ Persistent world data storage
 - ✅ Optimized configuration for low-resource hardware
 - ✅ Easy management via kubectl and custom scripts
@@ -25,6 +26,7 @@ This deployment runs Minecraft Bedrock Server **1.26.0.2** in a Kubernetes pod w
 - ✅ Health checks and readiness probes
 
 ### Server Specifications
+
 - **Version**: 1.26.0.2
 - **Max Players**: 5
 - **View Distance**: 10 chunks
@@ -36,7 +38,7 @@ This deployment runs Minecraft Bedrock Server **1.26.0.2** in a Kubernetes pod w
 
 ## Architecture
 
-```
+```text
 ┌────────────────────────────────────────┐
 │   Your Linux server here (your LAN ip) │
 │                                        │
@@ -76,11 +78,13 @@ This deployment runs Minecraft Bedrock Server **1.26.0.2** in a Kubernetes pod w
 ## Quick Start
 
 ### Prerequisites
+
 - K3s cluster running on your Linux server
 - kubectl configured with access to the cluster
 - KUBECONFIG set to `~/.kube/config`
 
 ### Deploy the Server
+
 ```bash
 cd ~/bedrock-server-for-dads
 
@@ -88,11 +92,13 @@ cd ~/bedrock-server-for-dads
 ```
 
 ### Check Status
+
 ```bash
 ./scripts/status.sh
 ```
 
 ### View Logs
+
 ```bash
 ./scripts/logs.sh          # Last 100 lines
 ./scripts/logs.sh -f       # Follow logs in real-time
@@ -106,7 +112,9 @@ cd ~/bedrock-server-for-dads
 All scripts are located in `~/bedrock-server-for-dads/scripts/`.
 
 ### `build.sh`
+
 **When to use:**
+
 - After updating the Bedrock server binary
 - After modifying the Dockerfile
 - When creating a new version
@@ -120,6 +128,7 @@ Builds the Docker image and imports it into K3S.
 ```
 
 ### `start-and-deploy.sh`
+
 Deploys/updates the Bedrock server to K3s.
 
 ```bash
@@ -127,11 +136,13 @@ Deploys/updates the Bedrock server to K3s.
 ```
 
 **What it does:**
+
 1. Applies all Kubernetes manifests
 2. Waits for deployment to be ready
 3. Shows deployment status and logs
 
 ### `stop.sh`
+
 Gracefully stops the Bedrock server.
 
 ```bash
@@ -139,11 +150,13 @@ Gracefully stops the Bedrock server.
 ```
 
 **What it does:**
+
 - Scales the deployment to 0 replicas
 - Waits for pod to terminate
 - World data remains safe on persistent volume
 
 ### `restart.sh`
+
 Restarts the Bedrock server.
 
 ```bash
@@ -151,11 +164,13 @@ Restarts the Bedrock server.
 ```
 
 **When to use:**
+
 - After changing configuration
 - When server becomes unresponsive
 - After applying updates
 
 ### `logs.sh`
+
 View server logs.
 
 ```bash
@@ -166,6 +181,7 @@ View server logs.
 ```
 
 ### `status.sh`
+
 Shows comprehensive server status.
 
 ```bash
@@ -173,6 +189,7 @@ Shows comprehensive server status.
 ```
 
 **Shows:**
+
 - Namespace status
 - Pod status and IP address
 - Deployment status
@@ -181,6 +198,7 @@ Shows comprehensive server status.
 - Recent events
 
 ### `backup.sh`
+
 Creates a backup of world data.
 
 ```bash
@@ -190,11 +208,13 @@ Creates a backup of world data.
 **Output:** `~/bedrock-backups/bedrock-worlds-YYYYMMDD-HHMMSS.tar.gz`
 
 **Best practices:**
+
 - Run before major updates
 - Run before configuration changes
 - Schedule regular backups (see cron example below)
 
 ### `restore.sh`
+
 Restores world data from a backup.
 
 ```bash
@@ -202,11 +222,13 @@ Restores world data from a backup.
 ```
 
 **What it does:**
+
 1. Uploads backup to running pod
 2. Extracts world data
 3. Restarts server to apply changes
 
 ### `update-config.sh`
+
 Updates server.properties without rebuilding the image.
 
 ```bash
@@ -218,6 +240,7 @@ vi ~/bedrock-server-for-dads/k8s/02-configmap.yaml
 ```
 
 **What it does:**
+
 1. Updates the ConfigMap in Kubernetes
 2. Restarts the server pod to pick up new config
 
@@ -230,6 +253,7 @@ vi ~/bedrock-server-for-dads/k8s/02-configmap.yaml
 Edit `~/bedrock-server-for-dads/k8s/02-configmap.yaml` to change server settings.
 
 **Key settings:**
+
 ```yaml
 max-players=5                              # Player limit
 view-distance=10                           # Chunk view distance
@@ -241,6 +265,7 @@ server-authoritative-movement-strict=true  # Anti-cheat
 ```
 
 **After editing:**
+
 ```bash
 ./scripts/update-config.sh
 ```
@@ -260,6 +285,7 @@ resources:
 ```
 
 **After editing:**
+
 ```bash
 ./scripts/start-and-deploy.sh
 ```
@@ -269,6 +295,7 @@ resources:
 Default: 1 GB for world data.
 
 To change:
+
 ```bash
 # Edit PVC size
 vi ~/bedrock-server-for-dads/k8s/01-pvc.yaml
@@ -300,22 +327,26 @@ kubectl describe pod -n minecraft -l app=bedrock-server
 ### Cannot Connect from Minecraft Client
 
 1. **Verify server is running:**
+
 ```bash
 ./scripts/status.sh
 # Look for: pod/bedrock-server-xxx READY 1/1 Running
 ```
 
-2. **Check ports are accessible:**
+1. **Check ports are accessible:**
+
 ```bash
 sudo netstat -ulnp | grep 19132
 # Should show bedrock_server listening on both ports
 ```
 
-3. **Verify server IP:**
+1. **Verify server IP:**
+
 - Server IP: **192.168.0.170** (or whatever your LAN IP is)
 - Port: **19132** (default)
 
-4. **Check firewall:**
+1. **Check firewall:**
+
 ```bash
 sudo ufw status
 # Ensure ports 19132 and 19133 UDP are allowed
@@ -336,13 +367,15 @@ kubectl exec -n minecraft $POD -- ls -la /bedrock/worlds/
 ### High CPU Usage
 
 1. **Reduce view distance:**
+
 ```bash
 vi ~/bedrock-server-for-dads/k8s/02-configmap.yaml
 # Change: view-distance=10 to view-distance=8
 ./scripts/update-config.sh
 ```
 
-2. **Reduce player limit:**
+1. **Reduce player limit:**
+
 ```bash
 vi ~/bedrock-server-for-dads/k8s/02-configmap.yaml
 # Change: max-players=5 to max-players=3
@@ -370,6 +403,7 @@ kubectl describe pod -n minecraft -l app=bedrock-server
 ## Backup & Restore
 
 ### Manual Backup
+
 ```bash
 ./scripts/backup.sh
 ```
@@ -418,6 +452,7 @@ find ~/bedrock-backups/ -name "bedrock-worlds-*.tar.gz" -mtime +7 -delete
 ## Lifecycle Management
 
 ### Starting the Server
+
 ```bash
 # If stopped (replicas=0)
 export KUBECONFIG=~/.kube/config
@@ -428,6 +463,7 @@ kubectl scale deployment bedrock-server -n minecraft --replicas=1
 ```
 
 ### Stopping the Server
+
 ```bash
 ./scripts/stop.sh
 ```
@@ -435,6 +471,7 @@ kubectl scale deployment bedrock-server -n minecraft --replicas=1
 ### Updating Bedrock Server Version
 
 1. **Download new version:**
+
 ```bash
 cd ~
 # Check the Minecraft Bedrock server homepage for correct download link if this fails.
@@ -442,19 +479,22 @@ wget https://minecraft.azureedge.net/bin-linux/bedrock-server-X.X.X.X.zip
 unzip bedrock-server-X.X.X.X.zip -d "Bedrock Server X.X.X.X"
 ```
 
-2. **Update Dockerfile image tag:**
+1. **Update Dockerfile image tag:**
+
 ```bash
 vi ~/bedrock-server-for-dads/Dockerfile
 # Update version in comments if needed
 ```
 
-3. **Update deployment manifest:**
+1. **Update deployment manifest:**
+
 ```bash
 vi ~/bedrock-server-for-dads/k8s/03-deployment.yaml
 # Change image tag to new version
 ```
 
-4. **Rebuild and deploy:**
+1. **Rebuild and deploy:**
+
 ```bash
 cd ~/bedrock-server-for-dads
 ./scripts/build.sh
@@ -479,6 +519,7 @@ kubectl delete namespace minecraft
 ```
 
 **To keep backups before undeploying:**
+
 ```bash
 ./scripts/backup.sh
 ```
@@ -488,18 +529,21 @@ kubectl delete namespace minecraft
 ## Monitoring
 
 ### View Resource Usage
+
 ```bash
 export KUBECONFIG=~/.kube/config
 kubectl top pod -n minecraft
 ```
 
 ### View Events
+
 ```bash
 export KUBECONFIG=~/.kube/config
 kubectl get events -n minecraft --sort-by='.lastTimestamp'
 ```
 
 ### Check Network Ports
+
 ```bash
 # On host
 sudo netstat -ulnp | grep bedrock_server
@@ -514,6 +558,7 @@ sudo netstat -ulnp | grep bedrock_server
 ## Performance Tuning
 
 ### Current Optimizations Applied
+
 - ✅ **max-threads=2** - Matches CPU cores
 - ✅ **view-distance=10** - Reduced from 32 (90% fewer chunks)
 - ✅ **tick-distance=3** - Reduced from 4
@@ -526,16 +571,19 @@ sudo netstat -ulnp | grep bedrock_server
 **If experiencing lag:**
 
 1. Reduce view distance to 8:
+
 ```yaml
 view-distance=8
 ```
 
-2. Reduce max players to 3:
+1. Reduce max players to 3:
+
 ```yaml
 max-players=3
 ```
 
-3. Increase resource limits:
+1. Increase resource limits:
+
 ```yaml
 limits:
   memory: "1.5Gi"
@@ -546,7 +594,7 @@ limits:
 
 ## Directory Structure
 
-```
+```text
 ~/bedrock-server-for-dads/
 ├── Dockerfile                 # Container image definition
 ├── .dockerignore              # Files to exclude from image
@@ -581,6 +629,7 @@ limits:
 ## Support & Maintenance
 
 ### Logs Location
+
 - **Container logs:** `kubectl logs -n minecraft -l app=bedrock-server`
 - **K3s logs:** `journalctl -u k3s -f`
 - **System logs:** `/var/log/syslog`
@@ -611,10 +660,12 @@ kubectl delete pod -n minecraft $POD --force --grace-period=0
 ## Migration from Binary Installation
 
 The old binary installation has been preserved in:
+
 - **Directory:** `~/Bedrock Server 1.21.132.backup-TIMESTAMP`
 - **Configuration:** `server.properties.backup-TIMESTAMP`
 
 To completely remove old installation:
+
 ```bash
 # Verify containerized version is working first!
 ./scripts/status.sh
@@ -632,6 +683,7 @@ rm -rf ~/"Bedrock Server 1.21.132"*
 |---------|------|---------|
 | 1.21.132.3 | 2026-01-10 | Initial containerized deployment |
 | 1.26.0.2 | 2026-02-12 | Updated for new Minecraft server version 1.26.0.2 |
+
 ---
 
 ## License
