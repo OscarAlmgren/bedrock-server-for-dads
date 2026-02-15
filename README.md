@@ -111,7 +111,7 @@ All scripts are located in `~/bedrock-server-for-dads/scripts/`.
 - After modifying the Dockerfile
 - When creating a new version
 
-** NOTE: You don't need to build this container; I'm doing it with this repo and Docker Hub. Only for your own understanding of how everything works.
+**NOTE: You don't need to build this container; I'm doing it with this repo and Docker Hub. Only for your own understanding of how everything works.**
 
 Builds the Docker image and imports it into K3S.
 
